@@ -2,9 +2,10 @@ using System;
 
 public class KnockOutGame
 {
-    public static void PlayKnockOut(int knockOutNumber, Random? random = null, Action<string>? outputWriter = null)
+    public static void PlayKnockOut(int knockOutNumber, Random? random = null, Action<string>? outputWriter = null, Func<string?>? inputReader = null)
     {
         Action<string> print = outputWriter ?? Console.WriteLine;
+        Func<string?> readInput = inputReader ?? Console.ReadLine;
 
         if (knockOutNumber != 6 && knockOutNumber != 7 && knockOutNumber != 8 && knockOutNumber != 9)
         {
@@ -18,6 +19,15 @@ public class KnockOutGame
 
         while (!isKnockedOut)
         {
+            print("Confirm throw by typing 'yes':");
+            string? input = readInput();
+
+            if (input == null || !input.Trim().Equals("yes", StringComparison.OrdinalIgnoreCase))
+            {
+                print("Throw not confirmed. Please type 'yes'.");
+                continue;
+            }
+
             int dieOne = rng.Next(1, 7);
             int dieTwo = rng.Next(1, 7);
             int currentSum = dieOne + dieTwo;

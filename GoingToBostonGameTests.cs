@@ -29,7 +29,7 @@ public class GoingToBostonGameTests
         // Round 3 (1 die): roll 4 -> highest is 4 (final score 15)
         {
             var mockRandom = new MockRandom(new[] { 2, 5, 3, 1, 6, 4 });
-            int finalScore = GoingToBostonGame.PlayGoingToBoston(random: mockRandom, outputWriter: _ => { });
+            int finalScore = GoingToBostonGame.PlayGoingToBoston(random: mockRandom, outputWriter: _ => { }, inputReader: () => "yes");
             AssertEquals("Going to Boston final score with mock rolls", 15, finalScore);
         }
 

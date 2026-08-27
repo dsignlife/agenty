@@ -26,15 +26,23 @@ public class TheLadderGameTests
         // Test The Ladder completion with mock random that rolls 1, then 2, ..., 6 immediately (6 throws)
         {
             var mockRandom = new MockRandom(new[] { 1, 2, 3, 4, 5, 6 });
-            int throws = TheLadderGame.PlayTheLadder(random: mockRandom, outputWriter: _ => { });
+            int throws = TheLadderGame.PlayTheLadder(random: mockRandom, outputWriter: _ => { }, inputReader: () => "yes");
             AssertEquals("Completed ladder in 6 throws", 6, throws);
         }
 
         // Test The Ladder with some missed rolls before hitting targets
         {
             var mockRandom = new MockRandom(new[] { 5, 1, 2, 3, 4, 5, 6 });
-            int throws = TheLadderGame.PlayTheLadder(random: mockRandom, outputWriter: _ => { });
+            int throws = TheLadderGame.PlayTheLadder(random: mockRandom, outputWriter: _ => { }, inputReader: () => "yes");
             AssertEquals("Completed ladder with misses in 7 throws", 7, throws);
+        }
+
+        // Test ignoring non-yes input then accepting yes
+        {
+            var mockRandom = new MockRandom(new[] { 1, 2, 3, 4, 5, 6 });
+            var inputs = new Queue<string?>(new[] { "no", "maybe", "yes", "yes", "yes", "yes", "yes", "yes" });
+            int throws = TheLadderGame.PlayTheLadder(random: mockRandom, outputWriter: _ => { }, inputReader: () => inputs.Dequeue());
+            AssertEquals("Completed ladder after ignoring non-yes inputs", 6, throws);
         }
 
         Console.WriteLine($"\nTheLadderGame Test Results: {passed} passed, {failed} failed.");

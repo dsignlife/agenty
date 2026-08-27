@@ -43,7 +43,7 @@ public class KnockOutGameTests
         {
             var logs = new List<string>();
             var mockRandom = new MockRandom(new[] { 3, 4 });
-            KnockOutGame.PlayKnockOut(7, random: mockRandom, outputWriter: logs.Add);
+            KnockOutGame.PlayKnockOut(7, random: mockRandom, outputWriter: logs.Add, inputReader: () => "yes");
             string fullOutput = string.Join("\n", logs);
             AssertContains("Knock out on first roll (sum 7)", "Knocked out! You hit your knockout number: 7", fullOutput);
             AssertContains("Game Over score 0 on immediate knockout", "Game Over! Your final score is: 0", fullOutput);
@@ -54,7 +54,7 @@ public class KnockOutGameTests
             var logs = new List<string>();
             // Sequence: 2, 3 (sum 5), then 3, 4 (sum 7)
             var mockRandom = new MockRandom(new[] { 2, 3, 3, 4 });
-            KnockOutGame.PlayKnockOut(7, random: mockRandom, outputWriter: logs.Add);
+            KnockOutGame.PlayKnockOut(7, random: mockRandom, outputWriter: logs.Add, inputReader: () => "yes");
             string fullOutput = string.Join("\n", logs);
             AssertContains("Safe roll adds to score", "Safe! Current score: 5", fullOutput);
             AssertContains("Subsequent knockout", "Knocked out! You hit your knockout number: 7", fullOutput);
