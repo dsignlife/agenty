@@ -48,5 +48,23 @@ public class GameLogicTests
         {
             Environment.Exit(1);
         }
+
+        Console.WriteLine();
+        KnockOutGameTests.RunUnitTests();
+
+        Console.WriteLine();
+        GoingToBostonGameTests.RunUnitTests();
+
+        Console.WriteLine();
+        RockPaperScissorsGameTests.RunUnitTests();
+
+        Console.WriteLine();
+        FizzBuzzGameTests.RunUnitTests();
+
+        Console.WriteLine();
+        TodoAppTests.RunUnitTests();
+
+        Console.WriteLine();
+        TheLadderGameTests.RunUnitTests();
     }
 }
