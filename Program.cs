@@ -14,7 +14,7 @@ public class Program
         while (running)
         {
             Console.WriteLine("\n========================================");
-            Console.WriteLine("             C# GAMES & APPS            ");
+            Console.WriteLine("             C# exercises            ");
             Console.WriteLine("========================================");
             Console.WriteLine("Please select a game or app (1-7) or 0 to exit:");
             Console.WriteLine("1. The Ladder Game");
