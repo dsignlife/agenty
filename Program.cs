@@ -13,6 +13,26 @@ public class Program
         bool running = true;
         while (running)
         {
+            Console.WriteLine("       [LB]                         [RB]");
+            Console.WriteLine("     .------.                     .------.");
+            Console.WriteLine("    /  ____  \\___________________/  ____  \\");
+            Console.WriteLine("   /  /    \\                       /    \\  \\");
+            Console.WriteLine();
+            Console.WriteLine("  |  |  LT  |                     |  RT  |  |");
+            Console.WriteLine("  ;   \\____/                       \\____/   :");
+            Console.WriteLine(" /                                           \\");
+            Console.WriteLine();
+            Console.WriteLine("|     ( L )                                   |");
+            Console.WriteLine("|    Thumbstick            [===]        (Y)   |");
+            Console.WriteLine("|                        Touchpad    (X)   (B) |");
+            Console.WriteLine("|         _                             (A)   |");
+            Console.WriteLine("|       _| |_                                 |");
+            Console.WriteLine("|      |_   _|             ( R )              |");
+            Console.WriteLine("|        |_|             Thumbstick           |");
+            Console.WriteLine("|                                             |");
+            Console.WriteLine(" \\         /                       \\         /");
+            Console.WriteLine("  \\_______/                         \\_______/");
+            Console.WriteLine();
             Console.WriteLine("\n========================================");
             Console.WriteLine("             C# GAMES & APPS            ");
             Console.WriteLine("========================================");
