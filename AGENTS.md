@@ -83,6 +83,28 @@ Format:
 Docker:
 `docker compose up --build`
 
+## RAG Indexing
+
+The automatic code index uses the `agenty-code` Qdrant collection. From inside the OpenClaude development container, Qdrant is available at `http://qdrant:6333`.
+
+### Commands
+
+One-time sync:
+`QDRANT_URL=http://qdrant:6333 uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py sync`
+
+Continuous watch:
+`QDRANT_URL=http://qdrant:6333 uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py watch`
+
+### Rules
+
+- Use the Qdrant code index for semantic code discovery when useful.
+- Treat repository source files as the final source of truth; RAG results are discovery hints.
+- Before relying on the code index, ensure it is reasonably up to date.
+- If watch mode is already running, do not start another watcher.
+- Do not start a persistent watcher unless explicitly requested.
+- After substantial code changes, run a one-time `sync` if no watcher is running.
+- Do not commit `.rag_indexer_state.json`.
+
 ## Tool and Knowledge Routing
 
 - Prefer repository source code as the source of truth for existing project behavior.
