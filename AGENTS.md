@@ -48,6 +48,19 @@ Do not claim a test, build, command, or browser check succeeded unless it was ac
 - Do not modify unrelated files.
 - Never add secrets or local credentials to Git.
 
+### Branch and PR workflow
+
+- Before creating a new feature branch, fetch the latest remote state and base the branch on the latest remote default branch.
+- Do not assume the local `main` or default branch is up to date.
+- Determine the repository's actual default branch when needed instead of assuming it is `main`.
+- When preparing an existing feature branch for a pull request, fetch the latest remote default branch and check whether the feature branch is behind or conflicts with it.
+- If explicitly asked to update the feature branch, rebase it onto the latest remote default branch unless the repository already follows a different merge strategy.
+- Resolve conflicts conservatively. Preserve both the intended feature behavior and relevant changes from the latest default branch.
+- After resolving conflicts, rebuild and rerun the relevant tests before pushing.
+- If a rebase rewrites feature-branch history and a push is explicitly requested, use `--force-with-lease`, never plain `--force`.
+- Never force-push the repository's default branch.
+- Do not merge a pull request unless explicitly requested.
+
 ## Documentation
 
 - Update documentation when public behavior, configuration, setup, or architecture changes.
