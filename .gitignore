@@ -2,3 +2,8 @@ bin/
 obj/
 .openclaude/
 .vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.rag_indexer_state.json
