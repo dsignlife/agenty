@@ -1,14 +1,47 @@
 # RAG Indexer
 
-The RAG Indexer (`scripts/rag_indexer.py`) indexes repository source code into Qdrant using local FastEmbed embeddings.
+The RAG Indexer (`scripts/rag_indexer.py`) indexes repository source code into Qdrant using local FastEmbed embeddings with MCP compatibility.
+
+## Collections & Distinction
+
+- **`agenty-knowledge`**: Curated/manual project knowledge, architecture decisions, and operational notes managed via the `qdrant` MCP server.
+- **`agenty-code`**: Automatically generated repository source index managed by the indexer script (`rag_indexer.py`) and queried via the `qdrant-code` MCP server.
+
+## Embedding Model & Named Vectors
+
+- **Model**: `sentence-transformers/all-MiniLM-L6-v2` via FastEmbed.
+- **Named Vector**: `fast-all-minilm-l6-v2` (compatible with the official `mcp-server-qdrant`).
+- **Payload Structure**: Each chunk is stored with an MCP-compatible payload:
+  ```json
+  {
+    "document": "<actual source chunk>",
+    "metadata": {
+      "path": "...",
+      "chunk_index": 0,
+      "content_hash": "...",
+      "file_type": "...",
+      "repository": "..."
+    }
+  }
+  ```
+
+## Supported Files & Allowlist
+
+Only supported source and documentation extensions are indexed:
+`.cs`, `.csproj`, `.sln`, `.props`, `.targets`, `.md`, `.json`, `.yml`, `.yaml`, `.xml`, `.py`.
+
+Exclusions:
+- `.git`, `bin`, `obj`, `node_modules`, `.venv`, `venv`, `__pycache__`, `dist`, `build`
+- `.env`, `.env.*`, `*.env`
+- Binary and database files (`.png`, `.jpg`, `.pdf`, `.zip`, `.db`, `.sqlite`, etc.)
 
 ## Running Commands via `uv`
 
 ### 1. Sync Mode
-Performs a one-time scan of the repository, detects changes (added, modified, deleted files) via SHA-256 hashes, updates local index state, and upserts embeddings into Qdrant.
+Performs an incremental scan of the repository, computes SHA-256 hashes, tracks state in `.rag_indexer_state.json` (advanced only after successful upsert), and upserts embeddings into Qdrant.
 
 ```bash
-uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py sync
+QDRANT_URL=http://qdrant:6333 uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py sync
 ```
 
 Options:
@@ -18,26 +51,17 @@ Options:
 - `--root`: Root directory to index (default: `.`).
 
 ### 2. Watch Mode
-Runs a polling loop (default interval: 2 seconds) that continuously checks for file changes and automatically syncs incremental updates.
+Runs a polling loop (default interval: 2 seconds) that continuously monitors for file changes and automatically syncs incremental updates.
 
 ```bash
-uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py watch
+QDRANT_URL=http://qdrant:6333 uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py watch
 ```
 
-Options:
-- `--interval`: Polling interval in seconds (default: `2.0`).
+## Qdrant MCP Retrieval (`qdrant-code`)
 
-## Configuration
-
-- **Qdrant URL**: Configurable via `--url` or environment variable `QDRANT_URL`.
-- **Collection Name**: Configurable via `--collection` or environment variable `QDRANT_COLLECTION` (defaults to `agenty-code`).
-
-## How Incremental Updates Work
-
-1. **State Tracking**: A local JSON state file (`.rag_indexer_state.json`) maps relative file paths to their last known SHA-256 content hashes.
-2. **Scan & Hash**: During each sync/poll cycle, supported files across the repository are scanned and their SHA-256 hashes are computed.
-3. **Diff Calculation**:
-   - **Added files**: New paths not present in the previous state are chunked and indexed.
-   - **Modified files**: Paths whose hash differs from the previous state have their old Qdrant points deleted and are re-chunked and re-indexed.
-   - **Deleted files**: Paths present in the previous state but missing from the current scan have their Qdrant points deleted.
-4. **State Persistence**: The state file is updated with the current file hashes.
+Configured in `.openclaude.json` / project settings:
+- Server Name: `qdrant-code`
+- Collection: `agenty-code`
+- URL: `http://qdrant:6333`
+- Embedding Provider: `fastembed`
+- Embedding Model: `sentence-transformers/all-MiniLM-L6-v2`

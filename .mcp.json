@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "qdrant": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-qdrant"
+      ],
+      "env": {
+        "QDRANT_URL": "http://qdrant:6333",
+        "COLLECTION_NAME": "agenty-knowledge",
+        "EMBEDDING_PROVIDER": "fastembed",
+        "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+        "QDRANT_SEARCH_LIMIT": "8",
+        "TOOL_STORE_DESCRIPTION": "Store important project knowledge, architecture decisions, implementation details, code patterns, file locations, and reusable technical information for later semantic retrieval.",
+        "TOOL_FIND_DESCRIPTION": "Search the project knowledge base semantically before investigating the repository. Use this to find relevant architecture, implementations, file locations, previous solutions, tests, and project documentation."
+      }
+    },
+    "qdrant-code": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-qdrant"
+      ],
+      "env": {
+        "QDRANT_URL": "http://qdrant:6333",
+        "COLLECTION_NAME": "agenty-code",
+        "EMBEDDING_PROVIDER": "fastembed",
+        "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+        "QDRANT_SEARCH_LIMIT": "8",
+        "TOOL_FIND_DESCRIPTION": "Search the automatically generated repository source code index semantically."
+      }
+    }
+  }
+}

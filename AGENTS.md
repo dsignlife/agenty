@@ -70,40 +70,37 @@ Do not claim a test, build, command, or browser check succeeded unless it was ac
 
 Build:
 `dotnet build`
-
 All tests:
 `dotnet test`
-
 Single test project:
 `dotnet test tests/MyProject.UnitTests`
-
 Format:
 `dotnet format`
-
 Docker:
 `docker compose up --build`
 
 ## RAG Indexing
-
-The automatic code index uses the `agenty-code` Qdrant collection. From inside the OpenClaude development container, Qdrant is available at `http://qdrant:6333`.
+The automatic code index uses the `agenty-code` Qdrant collection, configured with the explicit FastEmbed model `sentence-transformers/all-MiniLM-L6-v2` and named vector `fast-all-minilm-l6-v2`. From inside the OpenClaude development container, Qdrant is available at `http://qdrant:6333`.
 
 ### Commands
 
-One-time sync:
+One-time synchronization:
 `QDRANT_URL=http://qdrant:6333 uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py sync`
 
-Continuous watch:
+Continuous watch mode:
 `QDRANT_URL=http://qdrant:6333 uv run --with "qdrant-client[fastembed]" scripts/rag_indexer.py watch`
 
 ### Rules
 
-- Use the Qdrant code index for semantic code discovery when useful.
+- Use the automatic `agenty-code` index for semantic code discovery when useful.
 - Treat repository source files as the final source of truth; RAG results are discovery hints.
+- Use the curated knowledge collection (`agenty-knowledge`) for project knowledge/decisions and the code collection (`agenty-code`) for source-code discovery.
 - Before relying on the code index, ensure it is reasonably up to date.
 - If watch mode is already running, do not start another watcher.
 - Do not start a persistent watcher unless explicitly requested.
-- After substantial code changes, run a one-time `sync` if no watcher is running.
+- After substantial code changes, run a one-time sync if no watcher is running.
 - Do not commit `.rag_indexer_state.json`.
+
 
 ## Tool and Knowledge Routing
 
