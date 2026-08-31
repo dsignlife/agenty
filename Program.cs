@@ -33,8 +33,6 @@ public class Program
             Console.WriteLine(" \\         /                       \\         /");
             Console.WriteLine("  \\_______/                         \\_______/");
             Console.WriteLine();
-            Console.WriteLine("\n========================================");
-            Console.WriteLine("             C# exercises            ");
             Console.WriteLine("========================================");
             Console.WriteLine("Please select a game or app (1-7) or 0 to exit:");
             Console.WriteLine("1. The Ladder Game");
