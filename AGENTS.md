@@ -16,6 +16,9 @@
 - Business/domain logic must not depend on infrastructure-specific implementations.
 - Prefer extending existing abstractions over creating parallel implementations.
 - Before introducing a new package, service, abstraction, or architectural pattern, check whether the project already has an equivalent.
+- Prefer existing project conventions over generic best practices when both are valid.
+- Architectural changes should be justified by the task, not introduced solely because another pattern is more fashionable or theoretically cleaner.
+
 
 ## Code Changes
 
@@ -33,8 +36,11 @@ Before declaring a coding task complete:
 3. Add or update tests when behavior changes.
 4. Check compiler/type errors.
 5. Inspect the resulting diff for unrelated changes.
+6. Verify that newly introduced APIs match the installed dependency versions.
+7. Report any verification step that could not be completed.
 
 If verification fails, investigate and fix the failure instead of claiming completion.
+Do not claim a test, build, command, or browser check succeeded unless it was actually run successfully.
 
 ## Git
 
@@ -63,3 +69,29 @@ Format:
 
 Docker:
 `docker compose up --build`
+
+## Tool and Knowledge Routing
+
+- Prefer repository source code as the source of truth for existing project behavior.
+- Use project documentation and ADRs for architectural intent and past decisions.
+- Use Qdrant project knowledge for discovery and context, but verify important implementation details against the current source code.
+- Use Context7 for current third-party library and framework documentation.
+- Use Microsoft Learn for current .NET, ASP.NET Core, Azure, and other Microsoft documentation.
+- Use GitHub MCP for remote repository state such as issues, pull requests, branches, and repository metadata.
+- Use Playwright MCP when browser interaction or rendered-page behavior must be verified.
+- Do not rely on model memory for version-sensitive APIs when an authoritative documentation source is available.
+- When documentation conflicts with the repository, preserve existing project behavior unless the task explicitly requires migration or modernization.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub issues (uses `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five canonical triage roles. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout (`CONTEXT.md` + `docs/adr/`). See `docs/agents/domain.md`.
