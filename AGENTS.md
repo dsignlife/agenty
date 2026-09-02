@@ -43,7 +43,7 @@ Before declaring a coding task complete:
 5. Inspect the resulting diff for unrelated changes.
 6. Verify that newly introduced APIs match the installed dependency versions.
 7. Report any verification step that could not be completed.
-8. If source-code files changed, run `qdrant-code` `reindex_changes` for `/workspace` once after verification and before declaring the task complete.
+8. If indexed project files changed, run qdrant-code reindex_changes for /workspace once near task completion. Do not reindex after every individual edit or commit.
 9. If fresh semantic code search is needed earlier during implementation, run `reindex_changes` before relying on the updated index.
 
 If verification fails, investigate and fix the failure instead of claiming completion.
