@@ -1,4 +1,4 @@
 bin/
 obj/
-.openclaude/
 .vscode/
+.openclaude/settings.local.json
